@@ -11,7 +11,7 @@ class Repos():
 	# http://pygithub.readthedocs.io/en/latest/github_objects/Repository.html
 
 	def get_dir(self):
-		return os.path.dirname(os.path.realpath(__file__))
+		return os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 	def get_username(self):
 		''' gets own username uses it'''
@@ -49,7 +49,7 @@ class Repos():
 			dictionary = dict({ k: { 'name': v['name'], 'count':v['count'], 'fork': v['fork'], 'parent': v['parent'] } for k, v in dictionary.items() if (v['parent'] == parent) })
 		return dictionary
 
-	def clone_repos(self, repos):
+	def clone_repos(self, repos, dry_run=False):
 		''' clones all specified repos 
 		Parameters
 		-----------
@@ -62,11 +62,12 @@ class Repos():
 			os.makedirs(directory, exist_ok=True)
 			try:
 				print('cloning {} to {}'.format(repo, directory))
-				subprocess.check_call(['git', 'clone', repo, directory])
+				if not dry_run:
+					subprocess.check_call(['git', 'clone', repo, directory])
 			except:
 				continue
 
-	def clean_all(self, repos):
+	def clean_all(self, repos, dry_run=False):
 		''' cleans up all the cloned repos
 		Parameters
 		----------
@@ -83,7 +84,8 @@ class Repos():
 		for directory in del_dir:
 			if(os.path.exists(directory)):
 				print('deleting {}'.format(directory))
-				shutil.rmtree(directory, ignore_errors=True)
+				if not dry_run:
+					shutil.rmtree(directory, ignore_errors=True)
 
 def print_kwargs(**kwargs):
 	print(','.join(['{} = {}'.format(k, v) for k,v in kwargs.items()]))
@@ -96,7 +98,8 @@ def main():
 	p.add_argument('--clean', action='store_true', help='remove all directories cloned with cloners')
 	p.add_argument('--exclude-forks', action='store_true',help='only clones sources')
 	p.add_argument('--verbose', '-v', action='store_true', help='increase verbosity')
-	p.add_argument('--dry-run', '-d', action='store_true', help='check the repositories to be cloned')
+	p.add_argument('--dry-run', '-y', action='store_true', help='check the repositories to be cloned')
+	p.add_argument('--dest', '-d', help='where the repositories will be cloned')
 	args = p.parse_args()
 	r = Repos(args.token)
 
@@ -107,13 +110,22 @@ def main():
 		kwargs.update({'excludeForks': args.exclude_forks})
 	if args.verbose:
 		print('using https://api.github.com with credentials {}'.format(args.token))
-		print('Cloning as {}'.format(r.get_name()))
+		print('Repos {}'.format(r.get_name()))
 		print_kwargs(**kwargs)
-	if args.dry_run:
-		print('repos to be clones {}'.format(r.get_repo_dict(**kwargs)))
-	elif args.clean:
-		raise NotImplemented
+	if args.dest:
+		print('destination is not yet implemented EXITING!')
+		return
+	
+	repos = r.get_repo_dict(**kwargs)
+	if args.dry_run and not args.clean:
+		print('fake cloning')
+		r.clone_repos(repos, dry_run=True)
+	elif args.dry_run and args.clean:
+		print('fake cleaning')
+		r.clean_all(repos, dry_run=True)
+	elif not args.dry_run and args.clean:
+		print('cleaning')
+		r.clean_all(repos)
 	else:
-		repos = r.get_repo_dict(**kwargs)
 		print('cloning ')
 		r.clone_repos(repos)
