@@ -6,13 +6,11 @@ setup(
 	packages=[
 		'cloners'
 	],
-	# scripts=['./cloners/repos.py'],
 
 	# Requires pygithub
 	install_requires=[
 		'PyGithub==1.35',
 	],
-	# py_modules=['test'],
 	entry_points={
 		'console_scripts': ['cloners=cloners.repos:main']
 	},
