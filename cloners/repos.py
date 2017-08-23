@@ -1,5 +1,4 @@
 from github import Github
-from . import access
 import subprocess
 import os
 # First create a Github instance:
