@@ -28,7 +28,7 @@ Clone organization repos without Forks
 `cloners <personal-token> --root-name <org-name> --exclude-forks `
 
 To specifiy gitlab or github
-`cloneres <personal-token> --type <gitlab|github>
+`cloners <personal-token> --type <gitlab|github>`
 
 ## Delete the cloned repos
 `cloners <personal-token> <arguments same as usage> --clean`
