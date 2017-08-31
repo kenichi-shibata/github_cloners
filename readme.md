@@ -1,7 +1,5 @@
-# Github cloners
-Clone all the repositories you have access to in Github
-
-Cloning will be done inside this directory, You can fork this repository and make it the master project and all your other projects as submodules
+# Git cloners
+Clone all the repositories you have access to in Github and Gitlab (under dev)
 
 # Installation
 ```
@@ -29,6 +27,8 @@ Clone organization repos with Forks
 Clone organization repos without Forks
 `cloners <personal-token> --root-name <org-name> --exclude-forks `
 
+To specifiy gitlab or github
+`cloneres <personal-token> --type <gitlab|github>
 
 ## Delete the cloned repos
 `cloners <personal-token> <arguments same as usage> --clean`
@@ -37,6 +37,6 @@ Clone organization repos without Forks
 By default all repos cloned and cleaned will be in the same directory where you cloned this repo
 
 # TODO
-* [ ] --destination parameter
+* [x] --destination parameter
 * [ ] add to PyPI to be able to do pip install pythonpackage
 
