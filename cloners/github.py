@@ -74,7 +74,10 @@ class GHRepos():
   def get_gists(self):
     gists = self.get_username().get_gists()
     gists_url = list(map(lambda x: x.git_pull_url, gists))
-    print(gists_url)
+    os.makedirs('tmp', exist_ok=True)
+    for gist in gists_url:
+      gist = 'https://{}:{}@{}'.format(self.get_name(), self.token, gist.split('https://')[1])
+      subprocess.check_output(['git', 'clone', gist],cwd='tmp')
 
   def clean_all(self, repos, dest, dry_run=False):
     ''' cleans up all the cloned repos

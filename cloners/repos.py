@@ -52,4 +52,5 @@ def main():
 
   elif args.type == 'gitlab-snippet' or args.type == 'github-gist':
     print ('snippets or gist')
+    r.get_gists()
 

@@ -1,5 +1,5 @@
 # Git cloners
-Clone all the repositories you have access to in Github and Gitlab (under dev)
+Clone all the repositories and gistsyou have access to in Github and Gitlab (under dev)
 
 # Installation
 ```
@@ -28,7 +28,10 @@ Clone organization repos without Forks
 `cloners <personal-token> --root-name <org-name> --exclude-forks `
 
 To specifiy gitlab or github
-`cloners <personal-token> --type <gitlab|github>`
+`cloners <personal-token> --type <gitlab-repo|github-repo>`
+
+Clone all your gists and put them in tmp
+`cloners <token> --type <github-gist> 
 
 ## Delete the cloned repos
 `cloners <personal-token> <arguments same as usage> --clean`
